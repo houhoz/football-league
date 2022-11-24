@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '联赛',
+  navigationBarTitleText: '联赛详情',
 })

@@ -14,6 +14,29 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "paths": {
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/utils/*": [
+        "./src/utils/*"
+      ],
+      "@/pages/*": [
+        "./src/pages/*"
+      ],
+      "@/servers/*": [
+        "./src/servers/*"
+      ],
+      "@/assets/*": [
+        "./src/assets/*"
+      ],
+      "@/package": [
+        "./package.json"
+      ],
+      "@/project": [
+        "./project.config.json"
+      ],
+    },
     "rootDir": ".",
     "jsx": "react-jsx",
     "allowJs": true,
@@ -22,6 +45,9 @@
       "node_modules/@types"
     ]
   },
-  "include": ["./src", "./types"],
+  "include": [
+    "./src",
+    "./types"
+  ],
   "compileOnSave": false
 }

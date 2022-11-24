@@ -1,5 +1,14 @@
 export default defineAppConfig({
-  pages: ['pages/index/index', 'pages/league/index', 'pages/team/index'],
+  pages: [
+    'pages/leagues/index',
+    'pages/league/index',
+    'pages/schedule/index',
+    'pages/ranking/index',
+    'pages/player/index',
+    'pages/index/index',
+    'pages/team/index',
+    'pages/login/index',
+  ],
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
@@ -13,7 +22,7 @@ export default defineAppConfig({
     list: [
       {
         text: '联赛',
-        pagePath: 'pages/league/index',
+        pagePath: 'pages/leagues/index',
         iconPath: 'assets/icons/tab_icon_platform_default.png',
         selectedIconPath: 'assets/icons/tab_icon_platform_selected.png',
       },
