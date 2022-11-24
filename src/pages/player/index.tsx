@@ -44,11 +44,11 @@ function Index() {
       }}
     >
       <TabPane title='进球榜'>
-        <Row>
-          <Col span='8' style={{ textAlign: 'center' }}>
+        <Row className='label-font'>
+          <Col span='4' style={{ textAlign: 'center' }}>
             排名
           </Col>
-          <Col span='8' style={{ textAlign: 'center' }}>
+          <Col span='12' style={{ textAlign: 'center' }}>
             球员
           </Col>
           <Col span='8' style={{ textAlign: 'center' }}>
@@ -58,14 +58,14 @@ function Index() {
         {goals.length > 0 && (
           <>
             {goals.map((item, index) => (
-              <Row key={index}>
-                <Col span='8' style={{ textAlign: 'center' }}>
+              <Row key={index} className='row-font'>
+                <Col span='4' style={{ textAlign: 'center' }}>
                   {index + 1}
                 </Col>
-                <Col span='5' style={{ textAlign: 'center' }}>
+                <Col span='12' style={{ textAlign: 'center' }}>
                   {item.name}
                 </Col>
-                <Col span='5' style={{ textAlign: 'center' }}>
+                <Col span='8' style={{ textAlign: 'center' }}>
                   {item.num}
                 </Col>
               </Row>
@@ -74,11 +74,11 @@ function Index() {
         )}
       </TabPane>
       <TabPane title='助攻榜'>
-        <Row>
-          <Col span='8' style={{ textAlign: 'center' }}>
+        <Row className='label-font'>
+          <Col span='4' style={{ textAlign: 'center' }}>
             排名
           </Col>
-          <Col span='8' style={{ textAlign: 'center' }}>
+          <Col span='12' style={{ textAlign: 'center' }}>
             球员
           </Col>
           <Col span='8' style={{ textAlign: 'center' }}>
@@ -88,14 +88,14 @@ function Index() {
         {assists.length > 0 && (
           <>
             {assists.map((item, index) => (
-              <Row key={index}>
-                <Col span='8' style={{ textAlign: 'center' }}>
+              <Row key={index} className='row-font'>
+                <Col span='4' style={{ textAlign: 'center' }}>
                   {index + 1}
                 </Col>
-                <Col span='5' style={{ textAlign: 'center' }}>
+                <Col span='12' style={{ textAlign: 'center' }}>
                   {item.name}
                 </Col>
-                <Col span='5' style={{ textAlign: 'center' }}>
+                <Col span='8' style={{ textAlign: 'center' }}>
                   {item.num}
                 </Col>
               </Row>

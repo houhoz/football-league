@@ -22,7 +22,7 @@ function Index() {
   }, [])
   return (
     <>
-      <Row>
+      <Row className='label-font'>
         <Col span='6' style={{ textAlign: 'center' }}>
           球队
         </Col>
@@ -42,7 +42,7 @@ function Index() {
       {teams.length > 0 && (
         <>
           {teams.map(item => (
-            <Row key={item.id}>
+            <Row key={item.id} className='row-font'>
               <Col span='6' style={{ textAlign: 'center' }}>
                 {item.name}
               </Col>
