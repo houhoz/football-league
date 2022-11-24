@@ -6,10 +6,13 @@ import './index.scss'
 
 function Index() {
   const [leagues, setLeagues] = useState<any[]>([])
-  function getLeagues() {
-    getAllLeague().then(res => {
+  async function getLeagues() {
+    try {
+      const res = await getAllLeague()
       setLeagues(res)
-    })
+    } catch (error) {
+      console.log('error :>> ', error)
+    }
   }
 
   useEffect(() => {

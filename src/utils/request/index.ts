@@ -60,9 +60,11 @@ function request(options): Promise<any> {
           if (Object.prototype.toString.call(data) === '[object ArrayBuffer]') {
             resolve(data)
           } else {
-            const { isSuccess, resultContent } = data
-            if (isSuccess === 'true') {
+            const { isSuccess, resultContent, errorCode } = data
+            if (isSuccess === 'true' && !errorCode) {
               resolve(resultContent)
+            } else {
+              reject(data)
             }
           }
         } else {

@@ -12,17 +12,20 @@ function Index() {
 
   const getMember = async type => {
     const { leagueId = 0 } = pageIns.current.router.params
-    const list = await getLeagueMemberData({ leagueId, type })
-    switch (type) {
-      case 'goal':
-        setGoals(list)
-        break
-      case 'assist':
-        setAssists(list)
-        break
-
-      default:
-        break
+    try {
+      const list = await getLeagueMemberData({ leagueId, type })
+      switch (type) {
+        case 'goal':
+          setGoals(list)
+          break
+        case 'assist':
+          setAssists(list)
+          break
+        default:
+          break
+      }
+    } catch (error) {
+      console.log('error :>> ', error)
     }
   }
 

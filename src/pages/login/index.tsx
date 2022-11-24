@@ -30,7 +30,7 @@ function Index() {
         title: '登录成功',
       })
       setStorageSync('name', res.name)
-      reLaunch({ url: '/pages/league/index' })
+      reLaunch({ url: '/pages/leagues/index' })
     } catch (error) {
       console.log('error :>> ', error)
     }

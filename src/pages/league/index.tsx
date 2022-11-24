@@ -7,8 +7,9 @@ import './index.scss'
 function Index() {
   const [league, setLeague] = useState<any>(null)
   const pageIns = useRef<any>()
-  function getLeagues() {
-    getAllLeague().then(res => {
+  async function getLeagues() {
+    try {
+      const res = await getAllLeague()
       const { leagueId = 0 } = pageIns.current.router.params
       const cur = res.find(item => item.id === Number(leagueId))
       if (cur) {
@@ -17,7 +18,9 @@ function Index() {
         })
         setLeague(cur)
       }
-    })
+    } catch (error) {
+      console.log('error :>> ', error)
+    }
   }
 
   useEffect(() => {

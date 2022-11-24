@@ -9,8 +9,12 @@ function Index() {
   const [teams, setTeams] = useState<any[]>([])
   const getTeamScore = async () => {
     const { leagueId = 0 } = pageIns.current.router.params
-    const list = await getLeagueTeamData({ leagueId })
-    setTeams(list)
+    try {
+      const list = await getLeagueTeamData({ leagueId })
+      setTeams(list)
+    } catch (error) {
+      console.log('error :>> ', error)
+    }
   }
   useEffect(() => {
     pageIns.current = Taro.getCurrentInstance()

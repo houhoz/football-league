@@ -11,8 +11,9 @@ function Index() {
 
   async function getRounds() {
     const { leagueId = 0 } = pageIns.current.router.params
-    const list = await getAllTeam({ leagueId })
-    getAllRound({ leagueId }).then(res => {
+    try {
+      const list = await getAllTeam({ leagueId })
+      const res = await getAllRound({ leagueId })
       for (const key in res) {
         if (Object.prototype.hasOwnProperty.call(res, key)) {
           const item = res[key]
@@ -25,7 +26,9 @@ function Index() {
       }
       setRounds(rounds)
       setTeams(list)
-    })
+    } catch (error) {
+      console.log('error :>> ', error)
+    }
   }
   useEffect(() => {
     pageIns.current = Taro.getCurrentInstance()
@@ -45,32 +48,34 @@ function Index() {
           客队
         </Col>
       </Row>
-      {Object.keys(rounds).map(key => (
-        <div key={key}>
-          <Row key={key}>
-            <Col span='24' className='round-name'>
-              {key}
-            </Col>
-          </Row>
-          {rounds[key].length > 0 &&
-            rounds[key].map((item, index) => (
-              <Row key={index + key}>
-                <Col span='6' style={{ fontSize: 14 }}>
-                  {item.roundDate}
-                </Col>
-                <Col span='6' style={{ textAlign: 'right' }}>
-                  {teams.find(v => Number(v.id) === item.homeTeam)?.name}
-                </Col>
-                <Col span='6' style={{ textAlign: 'center' }}>
-                  {item.homeTeamScore}:{item.guestTeamScore}
-                </Col>
-                <Col span='6' style={{ textAlign: 'left' }}>
-                  {teams.find(v => Number(v.id) === item.guestTeam)?.name}
-                </Col>
-              </Row>
-            ))}
-        </div>
-      ))}
+      {teams.length > 0 &&
+        Object.keys(rounds).length > 0 &&
+        Object.keys(rounds).map(key => (
+          <div key={key}>
+            <Row key={key}>
+              <Col span='24' className='round-name'>
+                {key}
+              </Col>
+            </Row>
+            {rounds[key].length > 0 &&
+              rounds[key].map((item, index) => (
+                <Row key={index + key}>
+                  <Col span='6' style={{ fontSize: 14 }}>
+                    {item.roundDate}
+                  </Col>
+                  <Col span='6' style={{ textAlign: 'right' }}>
+                    {teams.find(v => Number(v.id) === item.homeTeam)?.name}
+                  </Col>
+                  <Col span='6' style={{ textAlign: 'center' }}>
+                    {item.homeTeamScore}:{item.guestTeamScore}
+                  </Col>
+                  <Col span='6' style={{ textAlign: 'left' }}>
+                    {teams.find(v => Number(v.id) === item.guestTeam)?.name}
+                  </Col>
+                </Row>
+              ))}
+          </div>
+        ))}
     </div>
   )
 }
