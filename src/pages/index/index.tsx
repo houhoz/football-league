@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { Cell } from '@nutui/nutui-react-taro'
+import { Cell, Button } from '@nutui/nutui-react-taro'
+import { Image } from '@tarojs/components'
 import { myGoal } from '@/servers/my'
 import header from '@/assets/header.png'
 import './index.scss'
 
 function Index() {
   const [data, setData] = useState<any>(null)
+  const [userHeader, setUserHeader] = useState('')
   async function getMyData() {
     try {
       const res = await myGoal({ leagueId: 1 })
@@ -23,7 +25,7 @@ function Index() {
     <>
       <div className='header-wrap'>
         <div className='user-info'>
-          <img className='header' src={header} />
+          <Image className='header' src={userHeader || header} />
           {data?.name ? (
             <div className='name'>{data?.name}</div>
           ) : (
@@ -35,6 +37,17 @@ function Index() {
             </div>
           )}
         </div>
+        <Button
+          openType='chooseAvatar'
+          className='btn'
+          size='small'
+          type='primary'
+          onChooseAvatar={res => {
+            setUserHeader(res.detail.avatarUrl)
+          }}
+        >
+          修改头像
+        </Button>
       </div>
       <div className='operate'>
         <Cell title='修改密码' isLink />
