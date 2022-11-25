@@ -64,6 +64,15 @@ function Index() {
           })
         }
       />
+      <Cell
+        title='我的联赛数据'
+        isLink
+        onClick={() =>
+          Taro.navigateTo({
+            url: `/pages/data/index?leagueId=${pageIns.current.router.params?.leagueId}`,
+          })
+        }
+      />
     </div>
   )
 }

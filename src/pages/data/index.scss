@@ -8,22 +8,13 @@ page {
   position: relative;
   border: 1px solid transparent;
   .user-info {
-    display: flex;
-    align-items: center;
     margin-top: 50px;
     padding-left: 24px;
-    .header {
-      width: 70px;
-      height: 70px;
-      border: 4px solid #ffffff;
-      border-radius: 50%;
-    }
     .name {
       font-size: 20px;
       font-weight: 600;
       color: #ffffff;
       line-height: 56px;
-      margin-left: 10px;
     }
   }
   .user-data {
@@ -58,7 +49,4 @@ page {
       }
     }
   }
-}
-.operate {
-  margin-top: 20px;
 }

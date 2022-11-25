@@ -9,7 +9,7 @@ function Index() {
   const [data, setData] = useState<any>(null)
   async function getMyData() {
     try {
-      const res = await myGoal()
+      const res = await myGoal({ leagueId: 1 })
       setData(res)
     } catch (error) {
       console.log('error :>> ', error)
@@ -35,26 +35,9 @@ function Index() {
             </div>
           )}
         </div>
-        <div className='user-data'>
-          <div className='data-item'>
-            <div className='data-num'>{data?.goalNum || 0}</div>
-            <div className='data-name'>进球</div>
-          </div>
-          <div className='data-item'>
-            <div className='data-num'>{data?.assistNum || 0}</div>
-            <div className='data-name'>助攻</div>
-          </div>
-          <div className='data-item'>
-            <div className='data-num'>{data?.yellowNum || 0}</div>
-            <div className='data-name'>黄牌</div>
-          </div>
-          <div className='data-item'>
-            <div className='data-num'>{data?.redNum || 0}</div>
-            <div className='data-name'>红牌</div>
-          </div>
-        </div>
       </div>
       <div className='operate'>
+        <Cell title='修改密码' isLink />
         {data && (
           <Cell
             title='退出登录'

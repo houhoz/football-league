@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Row, Col, Cell } from '@nutui/nutui-react-taro'
+import { Cell, CellGroup } from '@nutui/nutui-react-taro'
+import header from '@/assets/header.png'
 import { myTeam } from '@/servers/my'
 
 import './index.scss'
@@ -22,25 +23,19 @@ function Index() {
     <>
       {team && (
         <>
-          <Cell title={team.name} desc={`队长：${team.captain}`} />
-          <Row>
-            <Col span='8' style={{ textAlign: 'center' }}>
-              序号
-            </Col>
-            <Col span='16' style={{ textAlign: 'left' }}>
-              球员
-            </Col>
-          </Row>
-          {team.member.map((item, index) => (
-            <Row key={index}>
-              <Col span='8' style={{ textAlign: 'center' }}>
-                {index + 1}
-              </Col>
-              <Col span='16' style={{ textAlign: 'left' }}>
-                {item}
-              </Col>
-            </Row>
-          ))}
+          <CellGroup title={team.name}>
+            {team.member.map((item, index) => (
+              <Cell
+                key={index}
+                iconSlot={<img className='header' src={header} />}
+                title={<div style={{ marginLeft: 10 }}>{item}</div>}
+                desc={`${team.captain === item ? '队长' : ''}`}
+                size='large'
+                center
+                isLink
+              />
+            ))}
+          </CellGroup>
         </>
       )}
     </>

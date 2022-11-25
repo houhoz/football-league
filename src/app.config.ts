@@ -1,13 +1,14 @@
 export default defineAppConfig({
   pages: [
-    'pages/leagues/index',
-    'pages/league/index',
-    'pages/schedule/index',
-    'pages/ranking/index',
-    'pages/player/index',
-    'pages/index/index',
-    'pages/team/index',
-    'pages/login/index',
+    'pages/leagues/index', // 联赛列表
+    'pages/league/index', // 联赛详情
+    'pages/schedule/index', // 赛程
+    'pages/ranking/index', // 积分榜
+    'pages/player/index', // 球员榜
+    'pages/data/index', //我的联赛数据
+    'pages/index/index', // 我的
+    'pages/team/index', // 我的球队
+    'pages/login/index', // 登录
   ],
   window: {
     backgroundTextStyle: 'light',
