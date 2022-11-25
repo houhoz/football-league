@@ -3,6 +3,8 @@ export default defineAppConfig({
     'pages/leagues/index', // 联赛列表
     'pages/league/index', // 联赛详情
     'pages/schedule/index', // 赛程
+    'pages/scheduleAdd/index', // 新增赛程
+    'pages/match/index', // 比赛详情
     'pages/ranking/index', // 积分榜
     'pages/player/index', // 球员榜
     'pages/data/index', //我的联赛数据

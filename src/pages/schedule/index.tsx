@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import Taro from '@tarojs/taro'
-import { Row, Col } from '@nutui/nutui-react-taro'
+import { Row, Col, Button } from '@nutui/nutui-react-taro'
 import { getAllRound, getAllTeam } from '@/servers/league'
 import team1 from '@/assets/team1.png'
 import team2 from '@/assets/team2.png'
@@ -14,8 +14,8 @@ function Index() {
   const [teams, setTeams] = useState<any[]>([])
 
   async function getRounds() {
-    const { leagueId = 0 } = pageIns.current.router.params
     try {
+      const { leagueId } = pageIns.current.router.params
       const list = await getAllTeam({ leagueId })
       list.forEach(item => {
         switch (item.id) {
@@ -41,7 +41,7 @@ function Index() {
           if (!rounds[roundName]) {
             rounds[roundName] = []
           }
-          rounds[roundName].push(item)
+          rounds[roundName].push({ ...item, matchId: key })
         }
       }
       setRounds(rounds)
@@ -87,7 +87,16 @@ function Index() {
                 )
 
                 return (
-                  <Row key={index + key} className='round-row'>
+                  <Row
+                    key={index + key}
+                    className='round-row'
+                    onClick={() => {
+                      const { leagueId } = pageIns.current.router.params
+                      Taro.navigateTo({
+                        url: `/pages/match/index?matchId=${item.matchId}&leagueId=${leagueId}`,
+                      })
+                    }}
+                  >
                     <Col span='8' style={{ textAlign: 'center' }}>
                       {item.roundDate}
                     </Col>
@@ -120,6 +129,17 @@ function Index() {
               })}
           </div>
         ))}
+      <Button
+        type='primary'
+        size='large'
+        onClick={() =>
+          Taro.navigateTo({
+            url: `/pages/scheduleAdd/index?leagueId=${pageIns.current.router.params?.leagueId}`,
+          })
+        }
+      >
+        新增赛程
+      </Button>
     </div>
   )
 }

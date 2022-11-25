@@ -8,3 +8,4 @@ export const getLeagueMemberData = createFetch(
   'football/leagueMemberData/',
   'GET'
 )
+export const createRound = createFetch('football/createRound/', 'POST')
