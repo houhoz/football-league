@@ -56,7 +56,8 @@
     "@tarojs/taro-h5": "3.5.7",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-refresh": "^0.11.0"
+    "react-refresh": "^0.11.0",
+    "react-router-dom": "5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",
