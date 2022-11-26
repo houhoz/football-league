@@ -84,7 +84,7 @@ function Index() {
         <div className=''>
           {teams.find(v => Number(v.id) === data?.guestTeam)?.name}
         </div>
-        {data?.finish && <div className='tip'>比赛已完结，不可编辑</div>}
+        {data?.finish > 0 && <div className='tip'>比赛已完结，不可编辑</div>}
       </div>
       <CellGroup title='关键节点'>
         {data &&
