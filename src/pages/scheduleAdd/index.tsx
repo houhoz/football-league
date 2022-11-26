@@ -5,10 +5,9 @@ import './index.scss'
 function Index() {
   const submit = async () => {
     const res = await createRound({
-      leagueId: '1',
-      startDate: '2022-12-03',
-      endDate: '2022-12-03',
-      number: '10',
+      number: 5,
+      startDate: '2022-11-26',
+      leagueId: 1,
     })
   }
   return (

@@ -62,7 +62,7 @@ function request(options): Promise<any> {
           } else {
             const { isSuccess, resultContent, errorCode } = data
             if (isSuccess === 'true' && !errorCode) {
-              resolve(resultContent)
+              resolve(resultContent || true)
             } else {
               reject(data)
             }

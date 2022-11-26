@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { usePullDownRefresh } from '@tarojs/taro'
 import { Row, Col, Button } from '@nutui/nutui-react-taro'
 import { getAllRound, getAllTeam } from '@/servers/league'
 import team1 from '@/assets/team1.png'
@@ -46,10 +46,15 @@ function Index() {
       }
       setRounds(rounds)
       setTeams(list)
+      Taro.stopPullDownRefresh()
     } catch (error) {
+      Taro.stopPullDownRefresh()
       console.log('error :>> ', error)
     }
   }
+  usePullDownRefresh(() => {
+    getRounds()
+  })
   useEffect(() => {
     pageIns.current = Taro.getCurrentInstance()
     getRounds()
