@@ -72,6 +72,9 @@ function Index() {
           title: '新增成功',
           icon: 'none',
         })
+        Taro.redirectTo({
+          url: `/pages/match/index?matchId=${matchId}&leagueId=${leagueId}`,
+        })
       }
     } catch (error) {
       console.log('error :>> ', error)

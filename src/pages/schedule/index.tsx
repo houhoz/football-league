@@ -15,6 +15,7 @@ function Index() {
 
   async function getRounds() {
     try {
+      console.log('rounds :>> ', rounds)
       const { leagueId } = pageIns.current.router.params
       const list = await getAllTeam({ leagueId })
       list.forEach(item => {
@@ -28,7 +29,6 @@ function Index() {
           case 3:
             item.logo = team3
             break
-
           default:
             break
         }
@@ -53,6 +53,12 @@ function Index() {
     }
   }
   usePullDownRefresh(() => {
+    setRounds(prevState => {
+      for (var key in prevState) {
+        delete prevState[key]
+      }
+      return prevState
+    })
     getRounds()
   })
   useEffect(() => {
