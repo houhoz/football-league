@@ -12,6 +12,7 @@ export default defineAppConfig({
     'pages/index/index', // 我的
     'pages/team/index', // 我的球队
     'pages/login/index', // 登录
+    'pages/login1/index', // 登录
   ],
   window: {
     backgroundTextStyle: 'light',
