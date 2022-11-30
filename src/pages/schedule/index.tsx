@@ -15,7 +15,6 @@ function Index() {
 
   async function getRounds() {
     try {
-      console.log('rounds :>> ', rounds)
       const { leagueId } = pageIns.current.router.params
       const list = await getAllTeam({ leagueId })
       list.forEach(item => {
@@ -37,11 +36,11 @@ function Index() {
       for (const key in res) {
         if (Object.prototype.hasOwnProperty.call(res, key)) {
           const item = res[key]
-          const roundName = item.roundName
-          if (!rounds[roundName]) {
-            rounds[roundName] = []
+          const { roundDate, roundName, roundId } = item
+          if (!rounds[roundId]) {
+            rounds[roundId] = { roundDate, roundName, items: [] }
           }
-          rounds[roundName].push({ ...item, matchId: key })
+          rounds[roundId].items.push({ ...item, matchId: key })
         }
       }
       setRounds(rounds)
@@ -68,53 +67,53 @@ function Index() {
   return (
     <div className='schedule'>
       <Row className='label-font' style={{ marginBottom: 20 }}>
-        <Col span='8' style={{ textAlign: 'center' }}>
-          时间
-        </Col>
-        <Col span='6' style={{ textAlign: 'right' }}>
+        <Col span='9' style={{ textAlign: 'right' }}>
           主队
         </Col>
-        <Col span='4' style={{ textAlign: 'center' }}>
+        <Col span='6' style={{ textAlign: 'center' }}>
           比分
         </Col>
-        <Col span='6' style={{ textAlign: 'left' }}>
+        <Col span='9' style={{ textAlign: 'left' }}>
           客队
         </Col>
       </Row>
       {teams.length > 0 &&
         Object.keys(rounds).length > 0 &&
-        Object.keys(rounds).map(key => (
+        Object.values(rounds).map((item: any) => (
           <CellGroup
-            key={key}
+            key={item.roundDate}
             titleSlot={
-              <Row className='round-name'>
-                <Col span='24'>{key}</Col>
-              </Row>
+              <>
+                <Row className='round-name'>
+                  <Col span='24'>{item.roundName}</Col>
+                </Row>
+                <Row className='round-date'>
+                  <Col span='24'>{item.roundDate}</Col>
+                </Row>
+              </>
             }
           >
-            {rounds[key].length > 0 &&
-              rounds[key].map((item, index) => {
-                const homeTeam = teams.find(v => Number(v.id) === item.homeTeam)
+            {item.items.length > 0 &&
+              item.items.map((term: any) => {
+                const homeTeam = teams.find(v => Number(v.id) === term.homeTeam)
                 const guestTeam = teams.find(
-                  v => Number(v.id) === item.guestTeam
+                  v => Number(v.id) === term.guestTeam
                 )
                 return (
                   <Cell
-                    key={index + key}
+                    size='large'
+                    key={term.matchId}
                     isLink
                     center
                     onClick={() => {
                       const { leagueId } = pageIns.current.router.params
                       Taro.navigateTo({
-                        url: `/pages/match/index?matchId=${item.matchId}&leagueId=${leagueId}`,
+                        url: `/pages/match/index?matchId=${term.matchId}&leagueId=${leagueId}`,
                       })
                     }}
                     title={
                       <Row className='round-row'>
-                        <Col span='8' style={{ textAlign: 'center' }}>
-                          {item.roundDate}
-                        </Col>
-                        <Col span='6'>
+                        <Col span='9'>
                           <div
                             className='team-info'
                             style={{ justifyContent: 'flex-end' }}
@@ -127,17 +126,19 @@ function Index() {
                             />
                           </div>
                         </Col>
-                        <Col span='4' style={{ textAlign: 'center' }}>
-                          {item.finish === 1
-                            ? `${item.homeTeamGoal}: ${item.guestTeamGoal}`
+                        <Col span='6' style={{ textAlign: 'center' }}>
+                          {term.finish === 1
+                            ? `${term.homeTeamGoal}: ${term.guestTeamGoal}`
                             : '-'}
                         </Col>
-                        <Col span='6'>
+                        <Col span='9'>
                           <div className='team-info'>
-                            <img className='team-logo' src={guestTeam?.logo} />
-                            <div style={{ marginRight: 4 }}>
-                              {guestTeam?.name}
-                            </div>
+                            <img
+                              style={{ marginRight: 4 }}
+                              className='team-logo'
+                              src={guestTeam?.logo}
+                            />
+                            <div>{guestTeam?.name}</div>
                           </div>
                         </Col>
                       </Row>
