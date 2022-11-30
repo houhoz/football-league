@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import Taro, { usePullDownRefresh } from '@tarojs/taro'
-import { Row, Col, Button, Cell, CellGroup } from '@nutui/nutui-react-taro'
+import { Button, Row, Col, Cell, CellGroup } from '@nutui/nutui-react-taro'
 import { getAllRound, getAllTeam } from '@/servers/league'
 import team1 from '@/assets/team1.png'
 import team2 from '@/assets/team2.png'

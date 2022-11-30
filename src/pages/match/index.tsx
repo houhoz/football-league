@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Cell, CellGroup, Button, Swipe } from '@nutui/nutui-react-taro'
+import { Button, Cell, CellGroup, Swipe } from '@nutui/nutui-react-taro'
 import Taro, { usePullDownRefresh } from '@tarojs/taro'
 import { getRound, deleteRoundNode, submitRound } from '@/servers/match'
 import { getAllTeam } from '@/servers/league'

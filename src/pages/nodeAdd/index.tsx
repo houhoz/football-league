@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
-import { Picker, Cell, Button, InputNumber } from '@nutui/nutui-react-taro'
+import { Button, Cell, InputNumber, Picker } from '@nutui/nutui-react-taro'
 import Taro from '@tarojs/taro'
 import { getAllTeam } from '@/servers/league'
 import { myTeam } from '@/servers/my'

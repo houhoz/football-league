@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import Taro from '@tarojs/taro'
-import { Tabs, TabPane, Row, Col } from '@nutui/nutui-react-taro'
+import { Col, Row, Tabs, TabPane } from '@nutui/nutui-react-taro'
 import { getLeagueMemberData } from '@/servers/league'
 import './index.scss'
 

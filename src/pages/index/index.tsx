@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { Cell, Button } from '@nutui/nutui-react-taro'
+import { Button, Cell } from '@nutui/nutui-react-taro'
 import { Image } from '@tarojs/components'
 import { myGoal } from '@/servers/my'
 import header from '@/assets/header.png'
