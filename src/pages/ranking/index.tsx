@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import Taro from '@tarojs/taro'
-import { Row, Col } from '@nutui/nutui-react-taro'
+import { Row, Col, Cell, CellGroup } from '@nutui/nutui-react-taro'
 import { getLeagueTeamData } from '@/servers/league'
 import './index.scss'
 
@@ -21,7 +21,7 @@ function Index() {
     getTeamScore()
   }, [])
   return (
-    <>
+    <div className='ranking'>
       <Row className='label-font'>
         <Col span='6' style={{ textAlign: 'center' }}>
           球队
@@ -40,29 +40,35 @@ function Index() {
         </Col>
       </Row>
       {teams.length > 0 && (
-        <>
+        <CellGroup>
           {teams.map(item => (
-            <Row key={item.id} className='row-font'>
-              <Col span='6' style={{ textAlign: 'center' }}>
-                {item.name}
-              </Col>
-              <Col span='5' style={{ textAlign: 'center' }}>
-                {item.captain}
-              </Col>
-              <Col span='5' style={{ textAlign: 'center' }}>
-                {item.winNum}/{item.flatNum}/{item.loseNum}
-              </Col>
-              <Col span='4' style={{ textAlign: 'center' }}>
-                {item.goalNum}/{item.loseGoalNum}
-              </Col>
-              <Col span='4' style={{ textAlign: 'center' }}>
-                {item.score}
-              </Col>
-            </Row>
+            <Cell
+              size='large'
+              center
+              title={
+                <Row key={item.id} className='row-font'>
+                  <Col span='6' style={{ textAlign: 'center' }}>
+                    {item.name}
+                  </Col>
+                  <Col span='5' style={{ textAlign: 'center' }}>
+                    {item.captain}
+                  </Col>
+                  <Col span='5' style={{ textAlign: 'center' }}>
+                    {item.winNum}/{item.flatNum}/{item.loseNum}
+                  </Col>
+                  <Col span='4' style={{ textAlign: 'center' }}>
+                    {item.goalNum}/{item.loseGoalNum}
+                  </Col>
+                  <Col span='4' style={{ textAlign: 'center' }}>
+                    {item.score}
+                  </Col>
+                </Row>
+              }
+            />
           ))}
-        </>
+        </CellGroup>
       )}
-    </>
+    </div>
   )
 }
 export default Index

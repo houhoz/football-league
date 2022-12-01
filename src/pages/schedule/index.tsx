@@ -128,7 +128,7 @@ function Index() {
                         </Col>
                         <Col span='6' style={{ textAlign: 'center' }}>
                           {term.finish === 1
-                            ? `${term.homeTeamGoal}: ${term.guestTeamGoal}`
+                            ? `${term.homeTeamGoal} : ${term.guestTeamGoal}`
                             : '-'}
                         </Col>
                         <Col span='9'>

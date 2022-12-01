@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import Taro from '@tarojs/taro'
 import { myGoal } from '@/servers/my'
 import './index.scss'
 
 function Index() {
+  const pageIns = useRef<any>()
   const [data, setData] = useState<any>(null)
-  async function getMyData() {
+  async function getMyData(leagueId, name) {
     try {
-      const res = await myGoal({ leagueId: 1 })
+      const res = await myGoal({ leagueId, name })
       setData(res)
     } catch (error) {
       console.log('error :>> ', error)
@@ -14,7 +16,9 @@ function Index() {
   }
 
   useEffect(() => {
-    getMyData()
+    pageIns.current = Taro.getCurrentInstance()
+    const { leagueId, playerName = '' } = pageIns.current.router.params
+    getMyData(leagueId, playerName)
   }, [])
   return (
     <>
