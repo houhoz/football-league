@@ -102,8 +102,14 @@ function Index() {
                       onClick={() => {
                         const { leagueId, matchId } =
                           pageIns.current.router.params
+                        const homeTeam = teams.find(
+                          v => Number(v.id) === data?.homeTeam
+                        )?.id
+                        const guestTeam = teams.find(
+                          v => Number(v.id) === data?.guestTeam
+                        )?.id
                         Taro.navigateTo({
-                          url: `/pages/nodeAdd/index?leagueId=${leagueId}&matchId=${matchId}&nodeId=${item.id}`,
+                          url: `/pages/nodeAdd/index?leagueId=${leagueId}&matchId=${matchId}&nodeId=${item.id}&homeTeam=${homeTeam}&guestTeam=${guestTeam}`,
                         })
                       }}
                     >
@@ -127,7 +133,7 @@ function Index() {
                       第{item.happenTime}分钟，
                       {item.goalPlayer}（
                       {teams.find(v => Number(v.id) === item?.teamId)?.name}
-                      ）进球
+                      ）进球{item.goalType === 'own' && `（乌龙）`}
                       {item.assistPlayer && `，${item.assistPlayer} 助攻`}
                     </div>
                   }
@@ -142,8 +148,12 @@ function Index() {
         disabled={data?.finish}
         onClick={() => {
           const { leagueId, matchId } = pageIns.current.router.params
+          const homeTeam = teams.find(v => Number(v.id) === data?.homeTeam)?.id
+          const guestTeam = teams.find(
+            v => Number(v.id) === data?.guestTeam
+          )?.id
           Taro.navigateTo({
-            url: `/pages/nodeAdd/index?leagueId=${leagueId}&matchId=${matchId}`,
+            url: `/pages/nodeAdd/index?leagueId=${leagueId}&matchId=${matchId}&homeTeam=${homeTeam}&guestTeam=${guestTeam}`,
           })
         }}
       >

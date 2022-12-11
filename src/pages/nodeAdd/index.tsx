@@ -1,5 +1,11 @@
 import { useEffect, useState, useRef } from 'react'
-import { Button, Cell, InputNumber, Picker } from '@nutui/nutui-react-taro'
+import {
+  Button,
+  Cell,
+  InputNumber,
+  Picker,
+  Radio,
+} from '@nutui/nutui-react-taro'
 import Taro from '@tarojs/taro'
 import { getAllTeam } from '@/servers/league'
 import { myTeam } from '@/servers/my'
@@ -27,22 +33,26 @@ function Index() {
   const [happenTime, setHappenTime] = useState(1)
   const [goalPlayer, setGoalPlayer] = useState({ value: '', text: '' })
   const [assistPlayer, setAssistPlayer] = useState({ value: '', text: '' })
+  const [goalType, setGoalType] = useState('normal')
 
   const submit = async () => {
     try {
       const { leagueId, matchId, nodeId } = pageIns.current.router.params
+      const firstRoundNode = {
+        teamId: team.value,
+        happenTime,
+        type: 'goal',
+        goalType: goalType,
+        goalPlayer: goalPlayer.value,
+        assistPlayer: assistPlayer.value,
+      }
       if (nodeId) {
         const params = {
           leagueId,
           id: matchId,
           roundNode: [
             {
-              teamId: team.value,
-              happenTime,
-              type: 'goal',
-              goalType: 'normal',
-              goalPlayer: goalPlayer.value,
-              assistPlayer: assistPlayer.value,
+              ...firstRoundNode,
               id: nodeId,
             },
           ],
@@ -52,18 +62,16 @@ function Index() {
           title: '编辑成功',
           icon: 'none',
         })
+        Taro.redirectTo({
+          url: `/pages/match/index?matchId=${matchId}&leagueId=${leagueId}`,
+        })
       } else {
         const params = {
           leagueId,
           id: matchId,
           roundNode: [
             {
-              teamId: team.value,
-              happenTime,
-              type: 'goal',
-              goalType: 'normal',
-              goalPlayer: goalPlayer.value,
-              assistPlayer: assistPlayer.value,
+              ...firstRoundNode,
             },
           ],
         }
@@ -93,9 +101,14 @@ function Index() {
 
   const getTeams = async () => {
     try {
-      const { leagueId } = pageIns.current.router.params
+      const { leagueId, homeTeam, guestTeam } = pageIns.current.router.params
       const res = await getAllTeam({ leagueId })
-      const list = res.map(item => ({ value: item.id, text: item.name }))
+      const list = res
+        .map(item => ({ value: item.id, text: item.name }))
+        .filter(
+          item =>
+            item.value === Number(homeTeam) || item.value === Number(guestTeam)
+        )
       setTeams(list)
     } catch (error) {
       console.log('error :>> ', error)
@@ -114,6 +127,7 @@ function Index() {
       setTeams(list)
       setTeam({ ...curTeam })
       setHappenTime(node.happenTime)
+      setGoalType(node.goalType)
     } catch (error) {
       console.log('error :>> ', error)
     }
@@ -177,31 +191,44 @@ function Index() {
           />
         }
       />
+      <Cell
+        title='是否乌龙'
+        linkSlot={
+          <Radio.RadioGroup
+            value={goalType}
+            onChange={(v: string) => setGoalType(v)}
+            direction='horizontal'
+          >
+            <Radio value='normal'>否</Radio>
+            <Radio value='own'>是</Radio>
+          </Radio.RadioGroup>
+        }
+      />
       {team.value && (
-        <>
-          <Cell
-            title='请选择进球队员'
-            desc={goalPlayer.text}
-            onClick={() =>
-              setPickerConfig({
-                isVisible: true,
-                type: 'goalPlayer',
-                listData: players,
-              })
-            }
-          />
-          <Cell
-            title='请选择助攻队员'
-            desc={assistPlayer.text}
-            onClick={() =>
-              setPickerConfig({
-                isVisible: true,
-                type: 'assistPlayer',
-                listData: players,
-              })
-            }
-          />
-        </>
+        <Cell
+          title='请选择进球队员'
+          desc={goalPlayer.text}
+          onClick={() =>
+            setPickerConfig({
+              isVisible: true,
+              type: 'goalPlayer',
+              listData: players,
+            })
+          }
+        />
+      )}
+      {team.value && goalType === 'normal' && (
+        <Cell
+          title='请选择助攻队员'
+          desc={assistPlayer.text}
+          onClick={() =>
+            setPickerConfig({
+              isVisible: true,
+              type: 'assistPlayer',
+              listData: players,
+            })
+          }
+        />
       )}
       <Button type='primary' size='large' onClick={submit}>
         确定
