@@ -129,13 +129,18 @@ function Index() {
                 <Cell
                   key={item.id}
                   title={
-                    <div>
-                      第{item.happenTime}分钟，
-                      {item.goalPlayer}（
-                      {teams.find(v => Number(v.id) === item?.teamId)?.name}
-                      ）进球{item.goalType === 'own' && `（乌龙）`}
-                      {item.assistPlayer && `，${item.assistPlayer} 助攻`}
-                    </div>
+                    item.type === 'goal'
+                      ? `第${item.happenTime}分钟，
+                        ${item.goalPlayer}（
+                        ${teams.find(v => Number(v.id) === item?.teamId)?.name}
+                        ）进球${item.goalType === 'own' ? '（乌龙）' : ''}
+                        ${item.assistPlayer ? `，${item.assistPlayer}助攻` : ''}
+                      `
+                      : `第${item.happenTime}分钟，
+                      ${item.type === 'red' ? item.redCard : item.yellowCard}（
+                      ${teams.find(v => Number(v.id) === item?.teamId)?.name}
+                      ）${item.type === 'red' ? '红牌' : '黄牌'}
+                    `
                   }
                 />
               </Swipe>

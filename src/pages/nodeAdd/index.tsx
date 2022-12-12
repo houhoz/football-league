@@ -1,22 +1,21 @@
 import { useEffect, useState, useRef } from 'react'
-import {
-  Button,
-  Cell,
-  InputNumber,
-  Picker,
-  Radio,
-} from '@nutui/nutui-react-taro'
+import { Button, Cell, InputNumber, Picker } from '@nutui/nutui-react-taro'
 import Taro from '@tarojs/taro'
 import { getAllTeam } from '@/servers/league'
 import { myTeam } from '@/servers/my'
 import { createRoundNode, getRoundNode, updateRoundNode } from '@/servers/match'
 import './index.scss'
 
-// const types = [
-//   { text: '进球', value: 'goal' },
-//   { text: '红牌', value: 'red' },
-//   { text: '黄牌', value: 'yellow' },
-// ]
+const types = [
+  { text: '进球', value: 'goal' },
+  { text: '红牌', value: 'red' },
+  { text: '黄牌', value: 'yellow' },
+]
+
+const goalTypes = [
+  { text: '是', value: 'own' },
+  { text: '否', value: 'normal' },
+]
 
 function Index() {
   const defaultPickerConfig: any = {
@@ -29,11 +28,13 @@ function Index() {
   const [players, setPlayers] = useState<any[]>([])
   const [pickerConfig, setPickerConfig] = useState({ ...defaultPickerConfig })
   const [team, setTeam] = useState({ value: '', text: '' })
-  const [type, setType] = useState({ value: '', text: '进球' })
+  const [type, setType] = useState({ value: 'goal', text: '进球' })
   const [happenTime, setHappenTime] = useState(1)
   const [goalPlayer, setGoalPlayer] = useState({ value: '', text: '' })
   const [assistPlayer, setAssistPlayer] = useState({ value: '', text: '' })
-  const [goalType, setGoalType] = useState('normal')
+  const [redCard, setRedCard] = useState({ value: '', text: '' })
+  const [yellowCard, setYellowCard] = useState({ value: '', text: '' })
+  const [goalType, setGoalType] = useState({ value: 'normal', text: '否' })
 
   const submit = async () => {
     try {
@@ -41,10 +42,12 @@ function Index() {
       const firstRoundNode = {
         teamId: team.value,
         happenTime,
-        type: 'goal',
-        goalType: goalType,
+        type: type.value,
+        goalType: goalType.value,
         goalPlayer: goalPlayer.value,
         assistPlayer: assistPlayer.value,
+        redCard: redCard.value,
+        yellowCard: yellowCard.value,
       }
       if (nodeId) {
         const params = {
@@ -120,14 +123,38 @@ function Index() {
       const list = teamList.map(item => ({ value: item.id, text: item.name }))
       const res = await getRoundNode({ id })
       const [node] = res
-      const curTeam = list.find(item => item.value === node.teamId)
-      getPlayer(curTeam.value)
-      setGoalPlayer({ value: node.goalPlayer, text: node.goalPlayer })
-      setAssistPlayer({ value: node.assistPlayer, text: node.assistPlayer })
+      const {
+        assistPlayer,
+        goalPlayer,
+        goalType,
+        happenTime,
+        redCard,
+        teamId,
+        type,
+        yellowCard,
+      } = node
+      const curTeam = list.find(item => item.value === teamId)
+      getPlayer(teamId)
+      setHappenTime(happenTime)
       setTeams(list)
       setTeam({ ...curTeam })
-      setHappenTime(node.happenTime)
-      setGoalType(node.goalType)
+      setType({
+        value: type,
+        text: types.find(item => item.value === type)?.text || '',
+      })
+      if (type === 'goal') {
+        setGoalPlayer({ value: goalPlayer, text: goalPlayer })
+        setAssistPlayer({ value: assistPlayer, text: assistPlayer })
+        setGoalType({
+          value: goalType,
+          text:
+            goalTypes.find(item => item.value === node.goalType)?.text || '',
+        })
+      } else if (type === 'red') {
+        setRedCard({ value: redCard, text: redCard })
+      } else {
+        setYellowCard({ value: yellowCard, text: yellowCard })
+      }
     } catch (error) {
       console.log('error :>> ', error)
     }
@@ -153,15 +180,33 @@ function Index() {
         getPlayer(value)
         setGoalPlayer({ value: '', text: '' })
         setAssistPlayer({ value: '', text: '' })
+        setYellowCard({ value: '', text: '' })
+        setRedCard({ value: '', text: '' })
         break
       case 'type':
         setType({ value, text })
+        setAssistPlayer({ value: '', text: '' })
+        setGoalPlayer({ value: '', text: '' })
+        setYellowCard({ value: '', text: '' })
+        setRedCard({ value: '', text: '' })
+        if (type !== 'goal') {
+          setGoalType({ value: '', text: '' })
+        }
         break
       case 'goalPlayer':
         setGoalPlayer({ value, text })
         break
       case 'assistPlayer':
         setAssistPlayer({ value, text })
+        break
+      case 'goalType':
+        setGoalType({ value, text })
+        break
+      case 'yellowCard':
+        setYellowCard({ value, text })
+        break
+      case 'redCard':
+        setRedCard({ value, text })
         break
 
       default:
@@ -170,7 +215,17 @@ function Index() {
   }
   return (
     <div className='node'>
-      <Cell title='类型' desc={type.text} />
+      <Cell
+        title='类型'
+        desc={type.text}
+        onClick={() =>
+          setPickerConfig({
+            isVisible: true,
+            type: 'type',
+            listData: types,
+          })
+        }
+      />
       <Cell
         title='请选择球队'
         desc={team.text}
@@ -191,20 +246,20 @@ function Index() {
           />
         }
       />
-      <Cell
-        title='是否乌龙'
-        linkSlot={
-          <Radio.RadioGroup
-            value={goalType}
-            onChange={(v: string) => setGoalType(v)}
-            direction='horizontal'
-          >
-            <Radio value='normal'>否</Radio>
-            <Radio value='own'>是</Radio>
-          </Radio.RadioGroup>
-        }
-      />
-      {team.value && (
+      {type.value === 'goal' && (
+        <Cell
+          title='是否乌龙'
+          desc={goalType.text}
+          onClick={() =>
+            setPickerConfig({
+              isVisible: true,
+              type: 'goalType',
+              listData: goalTypes,
+            })
+          }
+        />
+      )}
+      {team.value && type.value === 'goal' && (
         <Cell
           title='请选择进球队员'
           desc={goalPlayer.text}
@@ -217,7 +272,7 @@ function Index() {
           }
         />
       )}
-      {team.value && goalType === 'normal' && (
+      {team.value && type.value === 'goal' && goalType.value === 'normal' && (
         <Cell
           title='请选择助攻队员'
           desc={assistPlayer.text}
@@ -225,6 +280,32 @@ function Index() {
             setPickerConfig({
               isVisible: true,
               type: 'assistPlayer',
+              listData: players,
+            })
+          }
+        />
+      )}
+      {team.value && type.value === 'red' && (
+        <Cell
+          title='请选择红牌队员'
+          desc={redCard.text}
+          onClick={() =>
+            setPickerConfig({
+              isVisible: true,
+              type: 'redCard',
+              listData: players,
+            })
+          }
+        />
+      )}
+      {team.value && type.value === 'yellow' && (
+        <Cell
+          title='请选择黄牌队员'
+          desc={yellowCard.text}
+          onClick={() =>
+            setPickerConfig({
+              isVisible: true,
+              type: 'yellowCard',
               listData: players,
             })
           }
