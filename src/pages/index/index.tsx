@@ -3,6 +3,7 @@ import Taro from '@tarojs/taro'
 import { Button, Cell } from '@nutui/nutui-react-taro'
 import { Image } from '@tarojs/components'
 import { myGoal } from '@/servers/my'
+import { wxLogin } from '@/servers/auth'
 import header from '@/assets/header.png'
 import './index.scss'
 
@@ -16,6 +17,32 @@ function Index() {
     } catch (error) {
       console.log('error :>> ', error)
     }
+  }
+
+  const handleBind = () => {
+    const { showToast, reLaunch } = Taro
+    Taro.login({
+      success: async res => {
+        if (res.code) {
+          console.log(`res.code`, res.code)
+          try {
+            await wxLogin({
+              userCode: res.code,
+            })
+            showToast({
+              title: '绑定成功',
+            })
+            Taro.removeStorageSync('name')
+            Taro.removeStorageSync('Cookies')
+            reLaunch({ url: '/pages/login/index' })
+          } catch (error) {
+            console.log('error :>> ', error)
+          }
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      },
+    })
   }
 
   useEffect(() => {
@@ -50,7 +77,9 @@ function Index() {
         </Button>
       </div>
       <div className='operate'>
-        <Cell title='修改密码' isLink />
+        {data && !data?.id && (
+          <Cell title='绑定微信登录' isLink onClick={handleBind} />
+        )}
         {data && (
           <Cell
             title='退出登录'

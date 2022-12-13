@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Cell, CellGroup } from '@nutui/nutui-react-taro'
+// import Taro from '@tarojs/taro'
 import header from '@/assets/header.png'
 import { myTeam } from '@/servers/my'
 
@@ -26,10 +27,15 @@ function Index() {
           <CellGroup title={team.name}>
             {team.member.map((item, index) => (
               <Cell
+                // onClick={() =>
+                //   Taro.navigateTo({
+                //     url: `/pages/data/index?leagueId=1&userId=${item.id}`,
+                //   })
+                // }
                 key={index}
                 iconSlot={<img className='header' src={header} />}
-                title={<div style={{ marginLeft: 10 }}>{item}</div>}
-                desc={`${team.captain === item ? '队长' : ''}`}
+                title={<div style={{ marginLeft: 10 }}>{item.name}</div>}
+                desc={`${team.captain === item.name ? '队长' : ''}`}
                 size='large'
                 center
                 isLink
