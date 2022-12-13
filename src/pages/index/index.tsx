@@ -32,9 +32,10 @@ function Index() {
             showToast({
               title: '绑定成功',
             })
-            Taro.removeStorageSync('name')
-            Taro.removeStorageSync('Cookies')
-            reLaunch({ url: '/pages/login/index' })
+            Taro.setStorageSync('bindSuccess', true)
+            // Taro.removeStorageSync('name')
+            // Taro.removeStorageSync('Cookies')
+            // reLaunch({ url: '/pages/login/index' })
           } catch (error) {
             console.log('error :>> ', error)
           }
@@ -58,7 +59,14 @@ function Index() {
           ) : (
             <div
               className='name'
-              onClick={() => Taro.navigateTo({ url: '/pages/login/index' })}
+              onClick={() => {
+                const bindSuccess = Taro.getStorageSync('bindSuccess')
+                if (bindSuccess) {
+                  Taro.navigateTo({ url: '/pages/login/index' })
+                } else {
+                  Taro.navigateTo({ url: '/pages/login1/index' })
+                }
+              }}
             >
               未登录
             </div>
