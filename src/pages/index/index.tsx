@@ -14,6 +14,9 @@ function Index() {
     try {
       const res = await myGoal({ leagueId: 1 })
       setData(res)
+      if (res?.id) {
+        Taro.setStorageSync('bindSuccess', true)
+      }
     } catch (error) {
       console.log('error :>> ', error)
     }

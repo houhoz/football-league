@@ -25,6 +25,7 @@ function Index() {
   }
   const pageIns = useRef<any>()
   const [teams, setTeams] = useState<any[]>([])
+  console.log('teams :>> ', teams)
   const [players, setPlayers] = useState<any[]>([])
   const [pickerConfig, setPickerConfig] = useState({ ...defaultPickerConfig })
   const [team, setTeam] = useState({ value: '', text: '' })
@@ -95,7 +96,10 @@ function Index() {
   async function getPlayer(teamId) {
     try {
       const res = await myTeam({ teamId })
-      const list = res.team.member.map(item => ({ value: item, text: item }))
+      const list = res.team.member.map(item => ({
+        value: item.id,
+        text: item.name,
+      }))
       setPlayers(list)
     } catch (error) {
       console.log('error :>> ', error)
@@ -119,9 +123,15 @@ function Index() {
   }
   const getNode = async id => {
     try {
-      const teamList = await getAllTeam({ leagueId: 1 })
-      const list = teamList.map(item => ({ value: item.id, text: item.name }))
-      const res = await getRoundNode({ id })
+      const { leagueId, homeTeam, guestTeam } = pageIns.current.router.params
+      const teamList = await getAllTeam({ leagueId })
+      const list = teamList
+        .map(item => ({ value: item.id, text: item.name }))
+        .filter(
+          item =>
+            item.value === Number(homeTeam) || item.value === Number(guestTeam)
+        )
+      const res = await getRoundNode({ id, leagueId })
       const [node] = res
       const {
         assistPlayer,
