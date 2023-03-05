@@ -25,7 +25,6 @@ function Index() {
   }
   const pageIns = useRef<any>()
   const [teams, setTeams] = useState<any[]>([])
-  console.log('teams :>> ', teams)
   const [players, setPlayers] = useState<any[]>([])
   const [pickerConfig, setPickerConfig] = useState({ ...defaultPickerConfig })
   const [team, setTeam] = useState({ value: '', text: '' })
